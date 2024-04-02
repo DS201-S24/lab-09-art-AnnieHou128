@@ -1,7 +1,7 @@
 ---
 title: "Lab 9 - University Art Collection"
-author: "Insert your name here"
-date: "Insert date here"
+author: "Annie Hou"
+date: "04/02 2024"
 output: html_document
 ---
 
