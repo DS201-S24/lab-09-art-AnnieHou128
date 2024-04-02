@@ -1,0 +1,49 @@
+---
+title: "Lab 9 - University Art Collection"
+author: "Insert your name here"
+date: "Insert date here"
+output: html_document
+---
+
+### Load packages and data
+
+```{r load-packages, message = FALSE}
+library(tidyverse) 
+library(skimr)
+```
+
+```{r load-data, message = FALSE, eval = FALSE}
+# Remove eval = FALSE or set it to TRUE once data is ready to be loaded
+art <- read_csv("data/art.csv")
+```
+
+### Exercise 9
+
+````{r eval = FALSE}
+# Remove eval = FALSE or set it to TRUE once data is ready to be loaded
+art <- art %>%
+  separate(___, into = c("___", "___"), sep = "\\(") %>%
+  mutate(year = str_remove(___, "\\)") %>% as.numeric()) %>%
+  select(title, artist, year, link)
+````
+
+### Exercise 10
+
+Remove this text, and add your answer for Exercise 10 here.
+
+### Exercise 11
+
+...
+
+### Exercise 12
+
+...
+
+### Exercise 13
+
+...
+
+### Exercise 14
+
+...
+
