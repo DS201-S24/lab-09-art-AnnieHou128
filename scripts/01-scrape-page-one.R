@@ -81,11 +81,12 @@ print(second_links)
 
 ## scrape artists ---------------------------------------------------------------
 
-second_artists <- second_page %>%
-  html_nodes("a.artist") %>%
-  html_text(trim = TRUE)
+second_artists <- second_page %>% 
+  html_nodes(".iteminfo") %>%
+  map_chr(getArtist)
 
 print(second_artists)
+
 
 ## put together in a data frame -------------------------------------------------
 
@@ -96,3 +97,14 @@ second_ten <- data.frame(
 )
 
 head(second_ten)
+
+
+getArtist <- function(oneNode){
+  oneArtist <- oneNode %>%
+    html_nodes(".artist") %>%
+    html_text(trim = TRUE)
+  
+  if(length(oneArtist) == 0) oneArtist <- ""
+  if(length(oneArtist) > 1) return(paste0(oneArtist, collapse=", "))
+  return(oneArtist)
+}

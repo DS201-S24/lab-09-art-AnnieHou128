@@ -17,9 +17,13 @@ scrape_page <- function(url) {
    str_replace_all("\\s+", " ")
 
  # scrape artists
- artists <- page %>%
-   html_nodes(".artist") %>%
-   html_text(trim = TRUE)
+ # artists <- page %>%
+ #   html_nodes(".artist") %>%
+ #   html_text(trim = TRUE)
+ artists <- page %>% 
+   html_nodes(".iteminfo") %>%
+   map_chr(getArtist)
+
 
  # scrape links
  base_url <- "https://collections.ed.ac.uk"
@@ -41,3 +45,17 @@ scrape_page <- function(url) {
 
 scrape_page(first_url)
 scrape_page(second_url)
+
+# fifth_url = "https://collections.ed.ac.uk/art/search/*:*/Collection:%22edinburgh+college+of+art%7C%7C%7CEdinburgh+College+of+Art%22?offset=50"
+# scrape_page(fifth_url)
+
+
+getArtist <- function(oneNode){
+  oneArtist <- oneNode %>%
+    html_nodes(".artist") %>%
+    html_text(trim = TRUE)
+  
+  if(length(oneArtist) == 0) oneArtist <- ""
+  if(length(oneArtist) > 1) return(paste0(oneArtist, collapse=", "))
+  return(oneArtist)
+}
