@@ -12,32 +12,74 @@ library(tidyverse)
 library(skimr)
 ```
 
-```{r load-data, message = FALSE, eval = FALSE}
-# Remove eval = FALSE or set it to TRUE once data is ready to be loaded
+```{r load-data, message = FALSE}
 art <- read_csv("data/art.csv")
 ```
 
 ### Exercise 9
 
-````{r eval = FALSE}
+Note that the warnings show that, since we are separating the titles, we expect to see two pieces of data. However, some rows had more than two pieces of data where only two were expected (e.g. row 29, 67, ...) as they either have a range of years or additional parenthesis in the titles; and some rows had less than two pieces (e.g. row 6, 13, ...) as they may contain no years in the titles. The additional pieces were discarded and the missing pieces were replaced by NAs.
+
+It is fine for us becuase we only want to capture year where it’s convenient to do so. Now, rows with missing become NA, and additional rows are discarded, so the dataset now is still neat.
+
+````{r ex9}
 # Remove eval = FALSE or set it to TRUE once data is ready to be loaded
-art <- art %>%
-  separate(___, into = c("___", "___"), sep = "\\(") %>%
-  mutate(year = str_remove(___, "\\)") %>% as.numeric()) %>%
-  select(title, artist, year, link)
+art_cleaned <- art %>%
+  separate(titles, into = c("title", "date"), sep = "\\(") %>%
+  mutate(year = str_remove(date, "\\)") %>% as.numeric()) %>%
+  select(title, artists, year, links)
+
 ````
 
 ### Exercise 10
 
-Remove this text, and add your answer for Exercise 10 here.
+According to the results from the skim function, there are 115 pieces have artist info missing, and no pieces have year or links info missing.
+
+```{r ex10}
+
+skimmed_summary <- skim(art_cleaned)
+print(skimmed_summary)
+
+```
+
 
 ### Exercise 11
 
-...
+Something out of the ordinary is that there are data points at zero. However, since we are plotting years, there shouldn't be zeros. 
+
+```{r ex11}
+ggplot(art_cleaned, aes(x = year)) +
+  geom_histogram(binwidth = 30) +
+  theme_minimal() +
+  labs(x = "Year", y = "Count", title = "Histogram of Artwork Years")
+```
 
 ### Exercise 12
 
-...
+By printting out the wrong year, we find that the wrong data entry is the art piece called Death Mask by H. Dempshall at year 2. Note that the year is wrong because there's a (2) in the title, which is identified as the year, whereas the true year was discarded during separation as there are more than 2 pieces. The correct year would be 1964 by searching on the website. 
+
+```{r ex12}
+
+wrong_year <- art_cleaned %>% 
+  filter(year < 500)
+print(wrong_year)
+
+# Modify to the correct year
+correct_year = 1964
+art_cleaned <- art_cleaned %>% 
+  mutate(year = case_when(
+    year == 2 ~ correct_year, 
+    TRUE ~ year
+  ))
+
+# Replot the histogram 
+ggplot(art_cleaned, aes(x = year)) +
+  geom_histogram(binwidth = 30) +
+  theme_minimal() +
+  labs(x = "Year", y = "Count", title = "Histogram of Artwork Years after Correction")
+
+
+```
 
 ### Exercise 13
 
