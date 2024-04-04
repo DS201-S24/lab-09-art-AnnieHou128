@@ -77,15 +77,32 @@ ggplot(art_cleaned, aes(x = year)) +
   geom_histogram(binwidth = 30) +
   theme_minimal() +
   labs(x = "Year", y = "Count", title = "Histogram of Artwork Years after Correction")
-
-
 ```
 
 ### Exercise 13
 
-...
+The most common artist is "unknown", which appeared for 372 times.
+
+```{r ex13}
+most_common_artist <- art_cleaned %>%
+  count(artists, sort = TRUE) %>%
+  filter(!is.na(artists)) %>%
+  top_n(1)
+
+print(most_common_artist)
+```
+
 
 ### Exercise 14
 
-...
+There are 11 art pieces have the word “child” in their title.
+
+```{r ex14}
+library(stringr)
+
+child_titles <- str_subset(tolower(art_cleaned$title), "child")
+num = length(child_titles)
+print(num)
+```
+
 

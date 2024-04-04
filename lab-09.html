@@ -464,11 +464,28 @@ ggplot(art_cleaned, aes(x = year)) +
 </div>
 <div id="exercise-13" class="section level3">
 <h3>Exercise 13</h3>
-<p>…</p>
+<p>The most common artist is “unknown”, which appeared for 372
+times.</p>
+<pre class="r"><code>most_common_artist &lt;- art_cleaned %&gt;%
+  count(artists, sort = TRUE) %&gt;%
+  filter(!is.na(artists)) %&gt;%
+  top_n(1)</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<pre class="r"><code>print(most_common_artist)</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##   artists     n
+##   &lt;chr&gt;   &lt;int&gt;
+## 1 Unknown   372</code></pre>
 </div>
 <div id="exercise-14" class="section level3">
 <h3>Exercise 14</h3>
-<p>…</p>
+<p>There are 11 art pieces have the word “child” in their title.</p>
+<pre class="r"><code>library(stringr)
+
+child_titles &lt;- str_subset(tolower(art_cleaned$title), &quot;child&quot;)
+num = length(child_titles)
+print(num)</code></pre>
+<pre><code>## [1] 11</code></pre>
 </div>
 
 
